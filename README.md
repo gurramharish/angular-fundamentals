@@ -34,7 +34,7 @@ Directive Component
 import { Component } from '@angular/core';
 
 @Component({
-  selector: '[app-server-directive]', // Selector is inside square brackets [] to use the selector as directive inside html tags
+  selector: '[app-server-directive]', // Selector is inside square brackets [] to use the selector as directive inside html tags Eg: <div app-server-directive></div>
   templateUrl: './server-directive.component.html',
   styleUrls: ['./server-directive.component.sass']
 })
@@ -54,3 +54,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServerClassComponent {}
 ```
+
+### 3. Directives
+
+1. Directives attach behaviour, extend or transform a particular element and its childern.
+
+1. Angular has lot of inbuilt directives.
+
+### 4. Services
+
+1. Services are a data layer, logic that is not a component related, such as API requests or reusable code.
+
+### 5. Routing
+
+1. Routing renders a component based on the URL state, drives navigation.
