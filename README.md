@@ -12,22 +12,45 @@ Modules, Components, Directives, Routing, Services
 
 1. Modules are the building blocks that contains routes, components, services and more. There can be one or more modules in one angular application.
 
-## Installing latest node using nvm
+### 2. Components
 
-### Installing required node version using nvm
+1. Components contains a template, data and logic, forming part of a DOM tree.
+
+1. Generating components using angular cli, use --dry-run flag to see the files created and modified while creating a new component.
 
 ```bash
-nvm install <node_version> (Eg: nvm install 14.15.0).
+ng generate component servers
+
+or
+
+ng g c servers
 ```
 
-### Listing the installed node version in local machine
+1. We can create directive components and class components, we need change the selector in the component to make the component selector works as driective or class.
 
-```bash
-nvm list or nvm ls
+Directive Component
+
+```javascript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: '[app-server-directive]', // Selector is inside square brackets [] to use the selector as directive inside html tags
+  templateUrl: './server-directive.component.html',
+  styleUrls: ['./server-directive.component.sass']
+})
+export class ServerDirectiveComponent {
+}
 ```
 
-## Use node version
+Class Component
 
-```bash
-nvm use <node_version> (Eg: nvm use 14.15.1).
+```typescript
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: '.app-server-class', // Selector has '.' in the beginning so it can be used a class name Eg: <p class="app-server-class"></p>
+  templateUrl: './server-class.component.html',
+  styleUrls: ['./server-class.component.sass']
+})
+export class ServerClassComponent {}
 ```
