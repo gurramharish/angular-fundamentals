@@ -5,12 +5,10 @@ import { Component } from '@angular/core';
   template: '<p>This a warning, you are in danger!</p>',
   styles: [`
     p {
-      color: red;
-    }
-  `,
-  `
-    p {
-      text-decoration: line-through;
+      padding: 5px;
+      background-color: mistyrose;
+      border: 1px solid red;
+      border-radius: 5px;
     }
   `
   ]

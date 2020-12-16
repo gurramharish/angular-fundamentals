@@ -42,6 +42,10 @@ export class ServerDirectiveComponent {
 }
 ```
 
+```html
+<div app-server-directive></div>
+```
+
 Class Component
 
 ```typescript
@@ -53,6 +57,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./server-class.component.sass']
 })
 export class ServerClassComponent {}
+```
+
+```html
+<div class="app-server-class"></div>
 ```
 
 ### 3. Directives
@@ -68,3 +76,36 @@ export class ServerClassComponent {}
 ### 5. Routing
 
 1. Routing renders a component based on the URL state, drives navigation.
+
+## Template Fundamentals
+
+### 1. Interpolation and expressions
+
+1. Text interpolation allows you to incorporate dynamic string values into your HTML templates. With interpolation, you can dynamically change what appears in an application view, such as displaying a custom greeting that includes the user's name.
+
+1. A template expression produces a value and appears within double curly braces, {{ }}. Angular resolves the expression and assigns it to a property of a binding target. The target could be an HTML element, a component, or a directive.
+
+1. With interpolation, Angular performs the following tasks:
+
+  Evaluates all expressions in double curly braces.
+  Converts the expression results to strings.
+  Links the results to any adjacent literal strings.
+  Assigns the composite to an element or directive property.
+
+```html
+<div> {{ title + '!'}} </div>
+<div> {{ isHappy ? ':)' : ':(' }} </div>
+```
+
+1. You can change the default interpolation delimiters in a component using bellow syntax.
+
+```typescript
+@Component({
+  selector: '.app-server-class',
+  templateUrl: './server-class.component.html',
+  styleUrls: ['./server-class.component.sass'],
+  interpolation: ['_-', '-_']
+})
+```
+
+### 2. Property Binding
