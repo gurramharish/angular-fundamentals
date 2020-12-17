@@ -1,5 +1,34 @@
 # Angular Fundamentals
 
+1. ## Quick start for creating angular app
+
+    1. Install angular-cli first.
+
+    ```bash
+    npm install -g @angular/cli
+    ```
+
+    1. Create angular project using angular cli
+
+    ```bash
+    ng new your-project-name
+    ```
+
+    1. If you are willing to use bootstrap along in the project, follow bellow steps
+
+    ```bash
+    npm install --save bootstrap
+    ```
+
+    After installing bootstrap, open angular.json and add the bellow lines in styles object under build.
+
+    ```json
+    "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.sass"
+    ],
+    ```
+
 ## 1. Angular Architecture, Setup, Source Files
 
 1. The typical architure of angular application is made up of these 5 building blocks.
@@ -108,4 +137,78 @@ export class ServerClassComponent {}
 })
 ```
 
-### 2. Property Binding
+### 2. Data Binding
+
+1. ### [Property binding](https://angular.io/guide/property-binding)
+
+1. ### [Event Binding](https://angular.io/guide/event-binding)
+
+1. ### [Attribute Binding](https://angular.io/guide/attribute-binding)
+
+1. ### [Binding Syntax](https://angular.io/guide/binding-syntax)
+
+1. ### [Property binding best practices](https://angular.io/guide/property-binding-best-practices)
+
+Examples of Property Binding:
+```html
+<!-- Bind button disabled state to `isUnchanged` property -->
+<button [disabled]="isUnchanged">Save</button>
+
+<!-- Often interpolation and property binding can achieve the same results. The following binding pairs do the same thing. -->
+<p><img src="{{itemImageUrl}}"> is the <i>interpolated</i> image.</p>
+<p><img [src]="itemImageUrl"> is the <i>property bound</i> image.</p>
+
+<p><span>"{{interpolationTitle}}" is the <i>interpolated</i> title.</span></p>
+<p>"<span [innerHTML]="propertyTitle"></span>" is the <i>property bound</i> title.</p>
+```
+
+Examples of Event Binding:
+
+```html
+<!-- Event Binding -->
+<button (click)="onSave()">Save</button>
+
+<!-- Custom events with EventEmitter -->
+<app-item-detail (deleteRequest)="deleteItem($event)" [item]="currentItem"></app-item-detail>
+```
+
+Examples of Attribut Binding:
+
+```html
+<!-- Attribute Binding -->
+<!-- It is recommended that you set an element property with a property binding whenever possible. However, sometimes you don't have an element property to bind. In those situations, you can use attribute binding. -->
+<p [attr.attribute-you-are-targeting]="expression"></p>
+
+<!-- Binding ARIA attributes -->
+<!-- create and set an aria attribute for assistive technology -->
+<button [attr.aria-label]="actionName">{{actionName}} with Aria</button>
+```
+
+Examples of Class Binding:
+
+```html
+<!-- Binding to the class attribute -->
+<!-- Setting a directive property -->
+<p [ngClass]="classes">[ngClass] binding to the classes property making this blue</p>
+<!-- Binding to a single and multiple CSS class -->
+
+<p [class.sale]="onSale">Single class binding</p>
+
+<!-- classExpression can be string or Array<string> or json object -->
+<!--
+  string value can be like this "my-class-1 my-class-2 my-class-3"
+  Array<string> can be ['foo', 'bar']
+  Json object can be in the format {[key: string]: boolean | undefined | null} Eg: {foo: true, bar: false}
+-->
+<p [class]="classExpression">Multi class binding</p>
+```
+
+Examples of Style Binding:
+
+```html
+<!-- Binding to a single style -->
+<div [style.width]="width">Some data with 100px</div>
+
+<!-- Single style binding with units -->
+<div [style.width.px]="width">Should provide a widht without px Eg: 100</div>
+```
