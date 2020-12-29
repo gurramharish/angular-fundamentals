@@ -1,1 +1,7 @@
-<p>You are so successful _- date | date: 'longDate' -_!</p>
+<p *ngIf="showSuccessMessage">
+  You are so successful _- date | date: 'longDate' -_! &nbsp;&nbsp;
+  <!-- Property Binding example for close button and event binding example for click -->
+  <button type="button" class="close" aria-label="Close" [disabled]="isDisabled" (click)="closeMessage()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</p>

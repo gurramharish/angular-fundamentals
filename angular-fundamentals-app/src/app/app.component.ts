@@ -8,4 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Angular Fundamentals App!';
   name = 'Harish Kumar Gurram';
+  userName = 'Harish Kumar';
+  calling = false;
+  callingNumber: string;
+
+  callPhone(phoneNumber?: string): void {
+    this.callingNumber = phoneNumber;
+    this.calling = !this.calling;
+  }
 }

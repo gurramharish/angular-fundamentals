@@ -145,9 +145,13 @@ export class ServerClassComponent {}
 
 1. ### [Attribute Binding](https://angular.io/guide/attribute-binding)
 
+1. ### [Two-way Binding](https://angular.io/guide/two-way-binding)
+
 1. ### [Binding Syntax](https://angular.io/guide/binding-syntax)
 
 1. ### [Property binding best practices](https://angular.io/guide/property-binding-best-practices)
+
+1. ### [Template Reference variables](https://angular.io/guide/template-reference-variables)
 
 Examples of Property Binding:
 ```html
@@ -211,4 +215,62 @@ Examples of Style Binding:
 
 <!-- Single style binding with units -->
 <div [style.width.px]="width">Should provide a widht without px Eg: 100</div>
+```
+
+Examples of Two-way Binding:
+
+```html
+Angular's two-way binding syntax is a combination of square brackets and parentheses, [()]. The [()] syntax combines the brackets of property binding, [], with the parentheses of event binding, (), as follows.
+
+<app-sizer [(size)]="fontSizePx"></app-sizer>
+
+Inorder to use two-way binding in the components we need to add angular FormsModule to the app.module.ts
+```
+
+Example using template varibale:
+
+```html
+<input #phone placeholder="phone number" />
+
+<!-- lots of other elements -->
+
+<!-- phone refers to the input element; pass its `value` to an event handler -->
+<button (click)="callPhone(phone.value)">Call</button>
+```
+
+## Rendering flows(Driectives & pipes)
+
+1. ### ngif
+
+ngIf is structural directive used to display content if the condition inside the ngIf evaluates to true.
+
+1. ### ngFor
+
+ngFor is a structural directive used to display an array of items in the UI.
+
+1. ### ngClass
+
+Examples:
+
+```html
+<!-- class property binding to add class based on condition success -->
+<span class="non-highlight" [class.highlight]="userName && userName.toLowerCase().endsWith('gurram')" [innerText]="userName"></span>
+
+<!-- Adding multiple classes using ngClass -->
+<div class="non-highlight"
+  [ngClass]="{'highlight': userName && userName.toLowerCase().endsWith('gurram'), 'strikeIt':true}"
+  [innerText]="userName">
+</div>
+```
+
+1. ### ngStyle
+
+1. ### Pipes
+
+Data transformation mechanism.
+
+1. ### Safe navigation operator
+
+```javascript
+passenge.children?.length || 0
 ```

@@ -7,6 +7,9 @@ import { ServerDirectiveComponent } from './server/server-directive/server-direc
 import { ServerClassComponent } from './server/server-class/server-class.component';
 import { WarningAlertComponent } from './warning-alert/warning-alert.component';
 import { SuccessAlertComponent } from './success-alert/success-alert.component';
+import { FormsModule } from '@angular/forms';
+import { ContactsComponent } from './contacts/contacts.component';
+import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
 
 @NgModule({
   declarations: [
@@ -15,10 +18,13 @@ import { SuccessAlertComponent } from './success-alert/success-alert.component';
     ServerDirectiveComponent,
     ServerClassComponent,
     WarningAlertComponent,
-    SuccessAlertComponent
+    SuccessAlertComponent,
+    ContactsComponent,
+    ContactDetailComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
