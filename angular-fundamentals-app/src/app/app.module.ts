@@ -10,6 +10,7 @@ import { SuccessAlertComponent } from './success-alert/success-alert.component';
 import { FormsModule } from '@angular/forms';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
+import { ContactCountComponent } from './contacts/contact-count/contact-count.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ContactDetailComponent } from './contacts/contact-detail/contact-detail
     WarningAlertComponent,
     SuccessAlertComponent,
     ContactsComponent,
-    ContactDetailComponent
+    ContactDetailComponent,
+    ContactCountComponent
   ],
   imports: [
     BrowserModule,

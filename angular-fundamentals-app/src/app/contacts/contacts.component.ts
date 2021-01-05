@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Contact } from './models/contact.intreface';
 
 @Component({
   selector: 'app-contacts',
@@ -7,20 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactsComponent implements OnInit {
 
-  myContacts = [
-    {
-      name: 'Harish Kumar Gurram',
-      mobile: '+91-9123456789'
-    },
-    {
-      name: 'Chanti',
-      mobile: '+44-39948885757'
-    },
-    {
-      name: 'Madhu',
-      mobile: '+91-3939848457'
-    }
-  ];
+  myContacts: Contact[];
 
   displayContacts = false;
   outlineNone = 'none';
@@ -28,6 +16,20 @@ export class ContactsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.myContacts = [
+      {
+        name: 'Harish Kumar Gurram',
+        mobile: '+91-9123456789'
+      },
+      {
+        name: 'Chanti',
+        mobile: '+44-39948885757'
+      },
+      {
+        name: 'Madhu',
+        mobile: '+91-3939848457'
+      }
+    ];
   }
 
   toogleContacts(): void {

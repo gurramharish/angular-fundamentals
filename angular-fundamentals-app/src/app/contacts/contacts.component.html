@@ -1,7 +1,7 @@
 <div class="row">
   <div class="contactbox col-md-6">
     <h3>
-      Contact List
+      Contact List&nbsp;<app-contact-count [contacts]="myContacts"></app-contact-count>
       <button type="button" class="close" aria-label="Close">
         <span aria-hidden="true" (click)="toogleContacts()">{{ !displayContacts ? '&hellip;' : '&minus;' }}</span>
       </button>
@@ -9,6 +9,6 @@
   </div>
 </div>
 <div *ngIf="displayContacts">
-  <app-contact-detail *ngFor="let contact of myContacts"></app-contact-detail>
+  <app-contact-detail *ngFor="let contact of myContacts" [contact]="contact"></app-contact-detail>
 </div>
 
