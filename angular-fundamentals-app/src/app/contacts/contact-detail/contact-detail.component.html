@@ -1,5 +1,8 @@
 <div class="row">
   <div class="contactbox col-md-6">
-    Name: {{ contact.name }} | Number: {{ contact.mobile }}
+    Name: {{ contact.name }} | Number: {{ contact.mobile }} &nbsp; &nbsp; &nbsp;
+    <button type="button" class="close outline-none" aria-label="Delete">
+      <span aria-hidden="true" (click)="onDelete(contact)">&#xf2ed;</span>
+    </button>
   </div>
 </div>

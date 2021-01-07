@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ContactsService } from './contacts.service';
 import { Contact } from './models/contact.intreface';
 
 @Component({
@@ -7,33 +9,26 @@ import { Contact } from './models/contact.intreface';
   styleUrls: ['./contacts.component.sass']
 })
 export class ContactsComponent implements OnInit {
-
+  constructor(private contactsService: ContactsService) {}
   myContacts: Contact[];
-
   displayContacts = false;
   outlineNone = 'none';
-
-  constructor() { }
+  errorMessage: string;
 
   ngOnInit(): void {
-    this.myContacts = [
-      {
-        name: 'Harish Kumar Gurram',
-        mobile: '+91-9123456789'
-      },
-      {
-        name: 'Chanti',
-        mobile: '+44-39948885757'
-      },
-      {
-        name: 'Madhu',
-        mobile: '+91-3939848457'
-      }
-    ];
+    this.contactsService.getContacts().subscribe({
+      next: contacts => this.myContacts = contacts,
+      error: err => this.errorMessage = err
+    });
   }
 
   toogleContacts(): void {
     this.displayContacts = !this.displayContacts;
   }
 
+  handleDeleteContact(contact: Contact): boolean {
+    console.log(`Received contact to delete is ${JSON.stringify(contact)}`);
+    this.myContacts = this.myContacts.filter((cntct: Contact) => cntct.mobile !== contact.mobile);
+    return true;
+  }
 }

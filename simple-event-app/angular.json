@@ -3,11 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-fundamentals-app": {
+    "simple-event-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "sass"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -17,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-fundamentals-app",
+            "outputPath": "dist/simple-event-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -25,11 +28,9 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/api"
+              "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.sass"
             ],
             "scripts": []
@@ -52,13 +53,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ]
             }
@@ -67,18 +68,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-fundamentals-app:build"
+            "browserTarget": "simple-event-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-fundamentals-app:build:production"
+              "browserTarget": "simple-event-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-fundamentals-app:build"
+            "browserTarget": "simple-event-app:build"
           }
         },
         "test": {
@@ -115,16 +116,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-fundamentals-app:serve"
+            "devServerTarget": "simple-event-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-fundamentals-app:serve:production"
+              "devServerTarget": "simple-event-app:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "angular-fundamentals-app"
+  "defaultProject": "simple-event-app"
 }

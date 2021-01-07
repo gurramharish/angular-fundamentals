@@ -244,9 +244,22 @@ Example using template varibale:
 
 ngIf is structural directive used to display content if the condition inside the ngIf evaluates to true.
 
+Eg:
+
+```html
+    <h3 *ngIf="calling; else noCallInProcess">{{ 'Calling ' + userName + ' on ' + callingNumber + ' ...!!'}}</h3>
+    <ng-template #noCallInProcess><h3>Enter Name and Phone Number to make a call.</h3></ng-template>
+```
+
 1. ### ngFor
 
 ngFor is a structural directive used to display an array of items in the UI.
+
+Eg:
+
+```html
+<app-contact-detail *ngFor="let contact of myContacts" [contact]="contact" (delete)="handleDeleteContact($event)"></app-contact-detail>
+```
 
 1. ### ngClass
 
@@ -265,12 +278,163 @@ Examples:
 
 1. ### ngStyle
 
-1. ### Pipes
+1. ngStyle is an attribute directive that updates styles for the containing html element.
 
-Data transformation mechanism.
+Eg:
+
+```html
+<some-element [ngStyle]="{'font-style': styleExp}">...</some-element>
+
+<some-element [ngStyle]="objExp">...</some-element>
+```
+
+1. ### [Pipes](https://angular.io/api?type=pipe)
+
+Data transformation mechanism. Pipes are used to transform data.
+
+Eg:
+
+```html
+<p>{{ date | date: 'longDate' }}</p>
+```
 
 1. ### Safe navigation operator
 
 ```javascript
 passenge.children?.length || 0
 ```
+
+1. ## Components Deep Dive
+
+    1. We can pass input to the custom components using `@Input` decorator.
+
+        Eg:
+
+        ```html
+        <!-- Passing myContacts array in the input variable contacts to the app-contact-count component -->
+        <app-contact-count [contacts]="myContacts"></app-contact-count>
+        ```
+
+        ```typescript
+        @Component({
+          selector: 'app-contact-count',
+          templateUrl: './contact-count.component.html',
+          styleUrls: ['./contact-count.component.sass']
+        })
+        export class ContactCountComponent implements OnInit {
+
+          @Input() contacts: Contact[];
+          numberOfContacts: number;
+        }
+        ```
+
+    1. To send data from child component to parent component we need to emit data using `@Output` decorator and EventEmitter.
+
+        Eg:
+
+        ```html
+        <app-contact-detail (delete)="handleDelete($event)"></app-contact-detail>
+        ```
+
+        ```typescript
+            @Component({
+            selector: 'app-contact-detail',
+            templateUrl: './contact-detail.component.html',
+            styleUrls: ['./contact-detail.component.sass']
+          })
+          export class ContactDetailComponent implements OnInit {
+
+            @Input() contact: Contact;
+            @Output()
+            delete: EventEmitter<Contact> = new EventEmitter();
+
+            constructor() { }
+
+            ngOnInit(): void {
+            }
+
+            onDelete(contact: Contact): void {
+              this.delete.emit(contact);
+            }
+
+          }
+        ```
+
+    1. ngOnChanges life cycle hook will be invoked before ngOnInt, so the logic inside ngOnChanges should carefully check a condition to verify change happened in the component after intial rendering.
+
+      Eg:
+      
+      ```typescript
+          ngOnChanges(changes): void {
+            if (!changes.contacts.firstChange) {
+              console.log('Change invoked in contact count', changes);
+              this.numberOfContacts = this.contacts.length;
+            }
+          }
+      ```
+
+## Services, Http and Observables
+
+1. ### [Services](https://angular.io/guide/architecture-services)
+
+    1. Services are class which can be used by all the componenets to share common data and functionality between components.
+
+    1. Services can be injected into components using Dependency Injection.
+
+    1. To inject services into components first we need to register the service into injector.
+
+    1. Service can be registered in multiple ways.
+
+        * By adding in providers of a module(All the components in the module can use it)
+        * Registering using root injector using `@Injectable()` decorator by providedIn: 'root'(Recommended), providedIn feature in available from angular version 6.
+        * By adding in providers in the component injector(This approach will create multiple service objects for each component instance).
+
+    1. Registering the service with root injector ensures the service is available throughout the application.
+
+    1. If the service registered using Component Injector, it is available only to that component and its child(nested) components. So the service is isolated from all other components, and multiple instances are created for each component instance.
+
+    Examples of registering a service:
+    
+    ```typescript
+    // Registering in the application root injector inside service
+    // Registering the service in root injector inside Service class using providedIn is the recommended way for better tree shaking
+    @Injectable({
+      providedIn: 'root'
+    })
+    export class ContactsService{}
+
+    // Registering the service in component
+    @Component({
+      selector: 'app-contacts',
+      templateUrl: './contacts.component.html',
+      styleUrls: ['./contacts.component.sass'],
+      providers: [ContactService]
+    })
+    export class ContactsComponent implements OnInit {
+      constructor(private contactsService: ContactsService) {}
+    }
+
+    // Before Angular 6 Services are registered in a module
+    @NgModule({
+      declarations: [
+        ContactsComponent,
+        ContactCountComponent,
+        ContactDetailComponent
+      ],
+      imports: [
+        CommonModule,
+        HttpClientModule
+      ],
+      exports: [ContactsComponent],
+      providers: [ContactService]
+    })
+    export class ContactsModule { }
+    ```
+
+1. ### [Http](https://angular.io/guide/http)
+
+    1. Angular application work along with data from backend, inorder to fetch, create, delete, or update data from servers we need HttpClient service which comes along with angular HttpClientModule.
+
+## Navigation and Routing
+
+1. 

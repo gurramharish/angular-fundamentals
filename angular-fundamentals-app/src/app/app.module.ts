@@ -8,9 +8,8 @@ import { ServerClassComponent } from './server/server-class/server-class.compone
 import { WarningAlertComponent } from './warning-alert/warning-alert.component';
 import { SuccessAlertComponent } from './success-alert/success-alert.component';
 import { FormsModule } from '@angular/forms';
-import { ContactsComponent } from './contacts/contacts.component';
-import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
-import { ContactCountComponent } from './contacts/contact-count/contact-count.component';
+import { ContactsModule } from './contacts/contacts.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,14 +18,13 @@ import { ContactCountComponent } from './contacts/contact-count/contact-count.co
     ServerDirectiveComponent,
     ServerClassComponent,
     WarningAlertComponent,
-    SuccessAlertComponent,
-    ContactsComponent,
-    ContactDetailComponent,
-    ContactCountComponent
+    SuccessAlertComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    ContactsModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

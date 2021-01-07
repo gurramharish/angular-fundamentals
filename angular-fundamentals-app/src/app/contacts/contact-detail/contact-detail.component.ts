@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Contact } from '../models/contact.intreface';
 
 @Component({
@@ -9,10 +9,16 @@ import { Contact } from '../models/contact.intreface';
 export class ContactDetailComponent implements OnInit {
 
   @Input() contact: Contact;
+  @Output()
+  delete: EventEmitter<Contact> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onDelete(contact: Contact): void {
+    this.delete.emit(contact);
   }
 
 }
