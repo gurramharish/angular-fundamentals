@@ -480,6 +480,12 @@ passenge.children?.length || 0
 
 1. While adding routes into the routes array make sure path has no leading slash.
 
+1. In AppRoutingModule we have invoked forRoot method, but we can seperate our routes into their own module in future, so while defining routes in feature modules don't use RouterModule.forRoot instead use RouterModule.forChild. Invoking forRoot in feature modules will register the router service providers mutliple times.
+
+1. AppRoutingModule should be last module in the imports of AppModule. This is beacuse angular will register the routes based on the order of imports.
+
+1. The wild card route '**' should always be in the last.
+
 1. Add the RouterLink directive as an attribute to any clickable element, enclosed in a square brackets. Bind routerLink to link parameters array, first element is the path, and all other elements in the array are valid route parameters.
 
     Eg:
