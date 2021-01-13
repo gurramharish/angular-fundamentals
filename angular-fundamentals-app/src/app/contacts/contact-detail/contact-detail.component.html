@@ -1,8 +1,15 @@
-<div class="row">
-  <div class="contactbox col-md-6">
-    Name: {{ contact.name }} | Number: {{ contact.mobile }} &nbsp; &nbsp; &nbsp;
-    <button type="button" class="close outline-none" aria-label="Delete">
-      <span aria-hidden="true" (click)="onDelete(contact)">&#xf2ed;</span>
+<div class="card" *ngIf="contact; else loadingContactDetails">
+  <div class="card-header">
+    <h3>{{ pageTitle }}</h3>
+  </div>
+  <div class="card-body">
+    <h4>{{ contact.name }}</h4>
+    <p>{{ contact.mobile }}</p>
+  </div>
+  <div class="card-fotter">
+    <button (click)="onBack()" class="btn, btn-outline-secondary">
+      <i class='fa fa-chevron-left'></i>Back
     </button>
   </div>
 </div>
+<ng-template #loadingContactDetails>Loading contact details...</ng-template>

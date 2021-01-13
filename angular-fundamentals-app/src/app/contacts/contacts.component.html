@@ -15,6 +15,47 @@
   </div>
 </ng-template>
 <div *ngIf="displayContacts">
-  <app-contact-detail *ngFor="let contact of myContacts" [contact]="contact" (delete)="handleDeleteContact($event)"></app-contact-detail>
+  <a *ngFor="let contact of myContacts" class='nav-link' [routerLink]="['/contacts', contact.id]" >{{ contact.name }}</a>
+  <!-- <div class="contactbox col-md-6" *ngFor="let contact of myContacts">
+
+  </div> -->
+  <!-- <app-contact-detail *ngFor="let contact of myContacts" [contact]="contact" (delete)="handleDeleteContact($event)"></app-contact-detail> -->
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <label>Enter Full Name:&nbsp;&nbsp; </label>
+    <input [disabled]="calling" aria-label="Enter Full Name" type="text" name="userName"
+      [(ngModel)]="userName" />&nbsp;&nbsp;
+
+    <!-- class property binding to add class based on condition success -->
+    <span class="non-highlight" [class.highlight]="userName && userName.toLowerCase().endsWith('gurram')"
+      [innerText]="userName"></span>
+
+    <!-- Adding multiple classes using ngClass -->
+    <div class="non-highlight"
+      [ngClass]="{'highlight': userName && userName.toLowerCase().endsWith('gurram'), 'strikeIt':true}"
+      [innerText]="userName">
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <label>Enter Phone Number:&nbsp;&nbsp; </label>
+    <input [disabled]="calling" #phone placeholder="Phone Number" [(ngModel)]='callingNumber' />&nbsp;&nbsp;
+    <button [disabled]="calling || !phone.value" class="btn btn-primary"
+      (click)="callPhone(phone.value)">Call</button>&nbsp;&nbsp;
+    <button [disabled]="!calling" class="btn btn-danger" (click)="callPhone()">End Call</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h3 *ngIf="calling; else noCallInProcess">{{ 'Calling ' + userName + ' on ' + callingNumber + ' ...!!'}}</h3>
+    <ng-template #noCallInProcess>
+      <h3>Enter Name and Phone Number to make a call.</h3>
+    </ng-template>
+  </div>
 </div>
 

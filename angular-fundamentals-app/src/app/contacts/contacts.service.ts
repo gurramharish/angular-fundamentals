@@ -9,6 +9,7 @@ import { tap, catchError, delay} from 'rxjs/operators';
 })
 export class ContactsService {
   constructor(private http: HttpClient){}
+  myContacts: Contact[];
 
   getContacts(): Observable<Contact[]> {
     return this.http.get<Contact[]>('api/contacts/contacts.json')

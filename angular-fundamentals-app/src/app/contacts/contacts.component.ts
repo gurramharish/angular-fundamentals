@@ -4,7 +4,6 @@ import { ContactsService } from './contacts.service';
 import { Contact } from './models/contact.intreface';
 
 @Component({
-  selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.sass']
 })
@@ -14,12 +13,28 @@ export class ContactsComponent implements OnInit {
   displayContacts = false;
   outlineNone = 'none';
   errorMessage: string;
+  name = 'Harish Kumar Gurram';
+  userName = 'Harish Kumar';
+  calling = false;
+  callingNumber: string;
+
+  callPhone(phoneNumber?: string): void {
+    this.callingNumber = phoneNumber;
+    this.calling = !this.calling;
+  }
 
   ngOnInit(): void {
-    this.contactsService.getContacts().subscribe({
-      next: contacts => this.myContacts = contacts,
-      error: err => this.errorMessage = err
-    });
+    if (!this.contactsService.myContacts) {
+      this.contactsService.getContacts().subscribe({
+        next: contacts => {
+          this.myContacts = contacts;
+          this.contactsService.myContacts = contacts;
+        },
+        error: err => this.errorMessage = err
+      });
+    } else {
+      this.myContacts = this.contactsService.myContacts;
+    }
   }
 
   toogleContacts(): void {

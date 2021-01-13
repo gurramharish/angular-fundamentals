@@ -435,6 +435,108 @@ passenge.children?.length || 0
 
     1. Angular application work along with data from backend, inorder to fetch, create, delete, or update data from servers we need HttpClient service which comes along with angular HttpClientModule.
 
-## Navigation and Routing
+## [Navigation and Routing](https://angular.io/guide/router)
 
-1. 
+1. Inorder have routing in your angular application follow bellow steps.
+
+1. Verify whether your index.html has `<base href="/">` defined in head section.
+
+1. Next add RouterMoudle in the imports of app.module.ts or you can have seperate module(app.routing.module.ts) to config routes and import the AppRoutingModule in AppModule. By adding RouterModule to the application we can use router directives like routerLink and router services in the application.
+
+1. To generate new angular project with routing add to the project use the bellow angular cli commond
+
+    ```bash
+    ng new routing-app --routing
+    ```
+
+1. If you didn't have routing enabled while creating the project, you need to add the RouterModule to AppModule or create a sperate module for routing and import it into AppModule.
+
+    Eg:
+
+    ```typescript
+        // app.routing.module.ts
+        import { NgModule } from '@angular/core';
+        import { RouterModule, Routes } from '@angular/router';
+        import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
+        import { ContactsComponent } from './contacts/contacts.component';
+        import { ServerComponent } from './server/server.component';
+
+        const routes: Routes = [
+          {path: 'contacts', component: ContactsComponent},
+          {path: 'contacts/:id', component: ContactDetailComponent},
+          {path: 'welcome', component: ServerComponent},
+          {path: '', redirectTo: 'welcome', pathMatch: 'full'},
+          {path: '**', redirectTo: 'welcome', pathMatch: 'full'}
+        ];
+
+        @NgModule({
+          imports: [
+            RouterModule.forRoot(routes, {useHash: false})
+          ],
+          exports: [RouterModule]
+        })
+        export class AppRoutingModule {}
+    ```
+
+1. While adding routes into the routes array make sure path has no leading slash.
+
+1. Add the RouterLink directive as an attribute to any clickable element, enclosed in a square brackets. Bind routerLink to link parameters array, first element is the path, and all other elements in the array are valid route parameters.
+
+    Eg:
+
+    ```html
+    <li><a class='nav-link' [routerLink]="['/welcome']">Home</a></li>
+    <li><a class='nav-link' [routerLink]="['/contacts']">Contacts</a></li>
+
+    <!-- Binding with parameters -->
+    <a class='nav-link' [routerLink]="['/contacts', contact.id]">{{ contact.name }}</a>
+    ```
+
+1. After creating the routing module we should have `<router-outlet></router-outlet>` tags in root component to load content based on url.
+
+1. Protecting routes with Guards
+
+    * CanActivate
+      - Guard navigation to a route
+    
+    * CanDeactivate
+      - Guard navigation from a route(Ex: While leaving the Add/Edit forms without saving)
+    
+    * Resolve
+      - Pre-fetch data before activating a route
+
+    * CanLoad
+      - Prevent asynchronous routing
+
+## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
+
+1. [Read This](https://www.freecodecamp.org/news/everything-you-need-to-know-about-ng-template-ng-content-ng-container-and-ngtemplateoutlet-4b7b51223691/)
+
+1. [Different Use Cases for <ng-template>](https://www.concretepage.com/angular-2/angular-4-ng-template-example)
+
+## ViewChild and ViewChildren
+
+1. [Read This](https://medium.com/technofunnel/angular-viewchild-and-viewchildren-fde2d252b9ab)
+
+1. [Querying the DOM with @ViewChild and @ViewChildren](https://app.pluralsight.com/guides/querying-the-dom-with-@viewchild-and-@viewchildren)
+
+## Angular Modules
+
+1. A class with @NgModule decorator.
+
+1. Its purpose:
+    - Organize the pieces of our applicaiton
+    - Arrange them into blocks
+    - Extend our application with capabilites from external libraries
+    - Provide a template resolution environment
+    - Aggregate and re-export
+
+1. A angular module can be loaded egarely or lazily.
+
+1. In order to create a new feature module and import in app module use the bellow command
+
+    ```bash
+    # Use --flat flag if you want to create the module in contacts folder instead of creating a new folder contact inside contacts.
+    # -m is to tell to which module we need to add the newly created module
+    ng g m contacts/contact --flat -m app
+    ```

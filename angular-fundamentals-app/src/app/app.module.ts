@@ -9,7 +9,8 @@ import { WarningAlertComponent } from './warning-alert/warning-alert.component';
 import { SuccessAlertComponent } from './success-alert/success-alert.component';
 import { FormsModule } from '@angular/forms';
 import { ContactsModule } from './contacts/contacts.module';
-import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app.routing.module';
+import { TemporaryModule } from './temps/temporary.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     FormsModule,
     ContactsModule,
-    RouterModule
+    AppRoutingModule,
+    TemporaryModule
   ],
   providers: [],
   bootstrap: [AppComponent]
