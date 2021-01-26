@@ -514,6 +514,26 @@ passenge.children?.length || 0
     * CanLoad
       - Prevent asynchronous routing
 
+1. Activating a Route with code needs `Router` serivce from RouterModule.
+
+  ```typescript
+  this.router.navigate(['/welcome']) // Standard syntax
+
+  this.router.navigate('/welcome') // Short cut syntax
+  // When using router's navigate method secondary routes are reatined.
+
+  this.router.navigateByUrl('/welcome') // Complete Url path
+
+  /*
+  Eg: 
+  http://localhost:4200/products(secondary-url-segment) //Current route
+
+  When you use navigate method it will just replace the primary route it will retain the secondary route
+  */
+  ```
+
+1. Reading route parameters we need `ActivatedRoute` service to be injected into components where we need route parameters.
+
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
 1. [Read This](https://www.freecodecamp.org/news/everything-you-need-to-know-about-ng-template-ng-content-ng-container-and-ngtemplateoutlet-4b7b51223691/)
@@ -546,3 +566,9 @@ passenge.children?.length || 0
     # -m is to tell to which module we need to add the newly created module
     ng g m contacts/contact --flat -m app
     ```
+
+1. Feature modules can be prefetched to improve the performance of the application using the prefetchingStrategy in angular. You can have custom prefetching strategy by implementing PreloadingStrategy.
+
+    * Read the bellow articles for more details on preloading modules
+        - [Preloading Stratgies by Jhon Papa](https://johnpapa.net/predictive-preloading-of-your-angular-bundles/)
+        - [Medium blog about Prefetching modules](https://medium.com/@muthudevendra/angular-custom-preloading-strategy-32abe99944f8)
