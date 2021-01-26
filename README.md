@@ -534,6 +534,99 @@ passenge.children?.length || 0
 
 1. Reading route parameters we need `ActivatedRoute` service to be injected into components where we need route parameters.
 
+1. Defining optional route parameters. Optional values are seperated using `;` from the url.
+
+  ```html
+  <a [routerLink]="['/products', {name: productName, category: productCategory}]">Search</a>
+
+  <!-- The above router link will form url like this localhost:4200/products;name=HeadPhones;category=Over%20the%20ear -->
+  ```
+
+1. Optional route params can be accessed in the same way as route parameters using `ActivatedRoute` service.
+
+    ```typescript
+    this.route.snapshot.paramMap.get('name');
+    ```
+  
+1. Passing query parameters in url. You can pass query parameters in links using `queryParams` attribute.
+
+    ```html
+    <!-- Passing Query Params --->
+    <a [routerLink]="['/products']"
+       [queryParams]="{filter: listFilter, showImage:showImage}">Product Name</a>
+    ```
+
+    ```typescript
+    // Passing query params router service navigate
+    this.router.navigate(['/products'], {queryParams: {filterBy: this.listFilter, showImage}});
+    ```
+
+1. Retaining the query parameters from current url to next navigated url using `queryParamsHandling`. queryParamsHandling handle can take values `preserve` and `merge`.
+
+  ```html
+  <button class="btn btn-outline-secondary mr-3"
+                style="width:80px" routerLink="/products"
+                queryParamsHandling="preserve">
+  ```
+
+  ```typescript
+  this.router.navigate(['/products'],
+            { queryParamsHandling: 'preserve' }
+  );
+  ```
+
+1. Reading query parameters in components. You can read the query parameters same as required or optional parameters using `ActivatedRoute` service.
+
+    ```typescript
+    this.route.snapshot.queryParamMap.get('filter');
+    this.route.snapshot.queryParamMap.get('showImage');
+    ```
+
+### Prefetching Data Using Route Resolvers
+
+1. To have better user experience we can retirve the data required for display in a components, before routing to the component.
+
+1. We can prefetch data using route resolvers.
+
+1. We need to provide data to routes, there are multiple ways we can achive this. The best way in any particular scenario depends on the amount of data, scope of sharing and how the data is used.
+
+    * Required Route Parameters
+    * Optional Route Parameters
+    * Query Parameters
+    * Route's Data Property
+    * Router Resolver
+    * Angular Service
+  
+1. Route's Data Property
+
+  ```typescript
+  @NgModule({
+    imports: [
+      RouterModule.forChild([
+        {
+          path: 'products',
+          component: ProductListComponent,
+          data: { pageTitle: 'Product List'}
+        }
+      ])
+    ]
+  })
+  ```
+
+1. We can get the data provided in the route configuration by using `ActivatedRoute` service.
+
+  ```typescript
+  this.pageTitle = this.route.snapshot.data['pageTitle'];
+  ```
+
+1. Steps involed in adding a Route Resolver
+
+    1. Build a route resolver service
+    1. Add `resolve` to the route configuration
+    1. Read teh data from `ActivatedRoute`
+
+1. To create a Route Resolver service you need to implement `Resolve` interface.
+
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
 1. [Read This](https://www.freecodecamp.org/news/everything-you-need-to-know-about-ng-template-ng-content-ng-container-and-ngtemplateoutlet-4b7b51223691/)
