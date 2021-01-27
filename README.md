@@ -627,6 +627,86 @@ passenge.children?.length || 0
 
 1. To create a Route Resolver service you need to implement `Resolve` interface.
 
+### Child Routes
+
+1. Child routes can be used when there is lot of conent to be displayed in a single component. You can organize the data in multiple tabs and used child routes to load the tabs into `<router-outlet></router-outlet>` into already routed outlet component.
+
+1. Child routes can be used in Tabbed Pages, Master/detail layouts, Embedded Templates.
+
+1. Child routes are required for lazy loading.
+
+1. Configuring child routes using `children` property while configuring routes.
+
+    ```typescript
+    const routes: Routes = [
+      {
+        path: 'products',
+        component: ProductListComponent
+      },
+      {
+        path: 'products/:id',
+        component: ProductDetailComponent,
+        resolve: { resolvedData: ProductResolver } },
+      {
+        path: 'products/:id/edit',
+        component: ProductEditComponent,
+        resolve: { resolvedData: ProductResolver },
+        children: [
+          {
+            path: '',
+            redirectTo: 'info',
+            pathMatch: 'full'
+          },
+          {
+            path: 'info',
+            component: ProductEditInfoComponent
+          },
+          {
+            path: 'tags',
+            component: ProductEditTagsComponent
+          }
+        ]
+      }
+    ];
+    ```
+
+1. Add the child routes in the component. We can add the routes to component in two ways.
+
+    * Absolute path
+
+      ```html
+      <a [routerLink]="['/products', product.id, 'edit', 'info']">Info</a>
+      ```
+
+    * Relative path(Just use the path without `/`)
+
+      ```html
+      <a [routerLink]="['info']">Info</a>
+      ```
+
+1. Invoking child routes from code(.ts files) using `ActivatedRoute` service
+
+    ```typescript
+    // Absolute Path
+    this.route.navigate(['/products', this.product.id, 'edit', 'info']);
+
+    // Relative Path
+    this.route.naviage(['info'], {relativeTo: this.route});
+    ```
+
+1. Child routes can use data from resolvers like normal routes, they can also use parents resolver data.
+
+    ```typescript
+    this.route.parent.snapshot.data['resolvedData'];
+
+    // Observable
+    this.route.parent.data.subscribe(data => {
+        const resolvedData = data.resolvedData;
+        this.errorMessage = resolvedData.error;
+        this.onProductRetrieved(resolvedData.product);
+    });
+    ```
+
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
 1. [Read This](https://www.freecodecamp.org/news/everything-you-need-to-know-about-ng-template-ng-content-ng-container-and-ngtemplateoutlet-4b7b51223691/)
