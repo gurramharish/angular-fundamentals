@@ -60,6 +60,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   isValid(path?: string): boolean {
+    console.log('Is valid invoked :: ', path);
     this.validate();
     if (path) {
       return this.dataIsValid[path];
@@ -94,6 +95,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   validate(): void {
+    console.log('validation form -------');
     this.dataIsValid = {};
 
     if (this.product.productName &&

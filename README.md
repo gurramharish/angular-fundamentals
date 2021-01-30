@@ -707,6 +707,67 @@ passenge.children?.length || 0
     });
     ```
 
+## Grouping and Component less Routes
+
+1. We can group routes in childern under a route with component less route config. So the child routes will displayed in the main outlet.
+
+### Checklist
+
+1. To group routes define routes as children of one parent route.
+
+1. Specify relative paths
+
+1. Parent route should be component less and we should have default path in the children to load the component.
+
+  ```typescript
+  const routes: Routes = [
+    {
+      path: 'products',
+      children: [
+        {
+          path: '',
+          component: ProductListComponent
+        },
+        {
+          path: ':id',
+          component: ProductDetailComponent,
+          resolve: { resolvedData: ProductResolver }
+        },
+        {
+          path: ':id/edit',
+          component: ProductEditComponent,
+          resolve: { resolvedData: ProductResolver },
+          children: [
+            {
+              path: '',
+              redirectTo: 'info',
+              pathMatch: 'full'
+            },
+            {
+              path: 'info',
+              component: ProductEditInfoComponent
+            },
+            {
+              path: 'tags',
+              component: ProductEditTagsComponent
+            }
+          ]
+        }
+      ]
+    }
+  ];
+  ```
+
+## Styling, Animating, and Watching Routes
+
+1. `routerLinkActive` attribute can be used to style the links when they are active.
+
+  ```html
+  <a routerLink="info" routerLinkActive="active">
+        Basic Information
+  </a>
+  ```
+
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
 1. [Read This](https://www.freecodecamp.org/news/everything-you-need-to-know-about-ng-template-ng-content-ng-container-and-ngtemplateoutlet-4b7b51223691/)
