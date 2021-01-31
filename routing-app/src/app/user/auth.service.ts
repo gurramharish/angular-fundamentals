@@ -8,12 +8,13 @@ import { MessageService } from '../messages/message.service';
 })
 export class AuthService {
   currentUser: User | null = null;
+  redirectUrl: string;
 
   get isLoggedIn(): boolean {
     return !!this.currentUser;
   }
 
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService) { this.redirectUrl = ''}
 
   login(userName: string, password: string): void {
     if (!userName || !password) {

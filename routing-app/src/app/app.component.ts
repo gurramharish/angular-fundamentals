@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { env } from 'process';
 import { slideInAnimation } from './app.animation';
+import { MessageService } from './messages/message.service';
 
 import { AuthService } from './user/auth.service';
 
@@ -15,10 +16,20 @@ export class AppComponent {
   pageTitle = 'GHK';
   loading = true;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {
     router.events.subscribe((event: Event) => {
       this.checkRouterEvent(event);
     });
+  }
+
+  get isMessagesDisplayed(): boolean {
+    return this.messageService.isDisplayed;
+  }
+
+  toogleMessages(): void {
+    this.messageService.isDisplayed = !this.messageService.isDisplayed;
+    this.messageService.isDisplayed ? this.router.navigate([{ outlets: {popup: ['messages'] } }])
+    : this.router.navigate([{ outlets: {popup: null} }]);
   }
 
   checkRouterEvent(event: Event): void {

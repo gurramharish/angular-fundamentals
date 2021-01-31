@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../user/auth.guard';
 import { ProductDetailComponent } from './product-detail.component';
 import { ProductEditInfoComponent } from './product-edit/product-edit-info.component';
 import { ProductEditTagsComponent } from './product-edit/product-edit-tags.component';
@@ -10,6 +11,7 @@ import { ProductResolver } from './product-resolver.service';
 const routes: Routes = [
   {
     path: 'products',
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',

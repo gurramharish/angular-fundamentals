@@ -768,6 +768,135 @@ passenge.children?.length || 0
   </a>
   ```
 
+1. To match the exact path for activating routes use `routerLinkActiveOptions`.
+
+  ```html
+  <a [routerLink]="['/products']" routerLinkActive="active" [routerLinkAcitveOptions]="{exact:true}">
+    Product List
+  </a>
+  ```
+
+1. Inorder to use angular animations in our anuglar we need to follow 4 steps.
+
+    * Import BrowserAnimationsModule
+    * Define the animations
+    * Register the animation in the components
+    * Trigger the animation when router root is activated
+
+1. Enable tracing to watch routing events in the console in `RouterModule.forRoot` along with routes array pass this json object `{enableTracing: true}`.
+
+1. We can subscribe to the router events and check the event to perform any opertaion. The best use case for using router events is for showing loader when navigate between routes.
+
+## Secondary Routes
+
+1. Mutliple routes displayed at the same time, and at the same level of hirearchy are reffered to as peer, sibiling, auxiliary or secondary routes.
+
+1. They are used to build more complex user interfaces.
+
+1. Secondary routes makes it easy to display multiple panels or panes on the page, each containing different content and supporting independent navigation.
+
+1. We can secondary routes to display dashboard with multiple panels, in which each panel supports their own navigation.
+
+1. Multi-window user interfaces can be build by using second routes.
+
+1. Secondary router outlet at the same level hirearchy should have unique name.
+
+  ```html
+  <router-outlet name="popup"></router-outlet>
+  ```
+
+1. Secondry routes are configured as normal routes in `RouterModule` but with extra attribute `outlet` should be specified with the secondary outlet name, in which the routes should be displayed.
+
+  ```typescript
+  RouterModule.forChild([
+    {
+      path: 'messages',
+      component: MessageComponent,
+      outlet: 'popup' // popup is the name of the secondary outlet
+    }
+  ])
+  ```
+
+### Activating the Secondary route
+
+1. We can activate the secondary router by adding a anchor tag like bellow.
+
+  ```html
+  <!-- popup is the name of the secondary router outlet where we want to load the component -->
+  <a [routerLink]="[{ outlets: { popup: ['messages'] } }]">Messages</a>
+  ```
+
+1. We can activate secondary router from code(ts) like bellwo.
+
+  ```typescript
+  this.router.navigate([{outlets: {popup: 'messages'}}]);
+  ```
+
+### Clearing the Secondary route
+
+1. Clearing the secondray routes from the navigation url form html and code(ts).
+
+  ```html
+  <a [routerLink]="[{ outlets: {popup: null}}]">Hide Messages</a>
+  ```
+
+  ```typescript
+  this.router.navigate([{ outlets: {popup: null}}]);
+
+  or
+
+  this.router.navigateByUrl('/login');
+  ```
+
+## Route Guards
+
+1. Routes guards are used to protect our routes from unauthorized access.
+
+1. Angular provides several types of guards.
+
+    * canActivate - Guard navigation to route
+    * canActivateChild - Guard navigation to a child route
+    * canDeactivate - Gaurd navigation away from a route
+    * canLoad - Prevent asynchronous routing
+    * resolve - Prefetch data before activating a route
+
+1. To protect route from unauthorize access we can implement `CanActivate` interface and create auth guard service.
+
+  ```typescript
+  @Injectable([
+    providedIn: 'root'
+  ])
+  export class AuthGuard implements CanActivate {
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      return this.checkLoggedIn();
+    }
+  }
+  ```
+
+1. Add the AuthGuard into the `canActivate` property for the routes which need to be authorized to access.
+
+  ```typescript
+  // /products and its child routes are now guraded with AuthGuard
+  const routes: Routes = [
+    {
+      path: 'products',
+      canActivate: [AuthGuard],
+      children: [
+        {
+          path: '',
+          component: ProductListComponent
+        },
+        {
+          path: ':id',
+          component: ProductDetailComponent,
+          resolve: { resolvedData: ProductResolver }
+        }
+      ]
+    }
+  ];
+  ```
+
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
 1. [Read This](https://www.freecodecamp.org/news/everything-you-need-to-know-about-ng-template-ng-content-ng-container-and-ngtemplateoutlet-4b7b51223691/)

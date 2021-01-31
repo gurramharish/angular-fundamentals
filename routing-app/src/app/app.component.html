@@ -6,10 +6,7 @@
       <a [routerLink]="['/welcome']" class="nav-link" routerLinkActive="active">Home</a>
     </li>
     <li class="nav-item">
-      <a
-        [routerLink]="['/products']"
-        class="nav-link"
-        routerLinkActive="active"
+      <a [routerLink]="['/products']" class="nav-link" routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
         Product List
       </a>
@@ -23,7 +20,12 @@
       <a class="nav-link" *ngIf="isLoggedIn">Welcome {{ userName }}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link">Show Messages</a>
+      <a class="nav-link" (click)="toogleMessages()">
+        <span>
+          <span *ngIf="isMessagesDisplayed">Hide</span>
+          <span *ngIf="!isMessagesDisplayed">Show</span> Messages
+        </span>
+      </a>
     </li>
     <li class="nav-item" *ngIf="!isLoggedIn">
       <a class="nav-link" routerLink="/login">Log In</a>
@@ -33,7 +35,13 @@
     </li>
   </ul>
 </nav>
-<div class="container"
-  [@slideInAnimation]="o.isActivated ? o.activatedRoute : ''">
-  <router-outlet #o="outlet"></router-outlet>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10" [@slideInAnimation]="o.isActivated ? o.activatedRoute : ''">
+      <router-outlet #o="outlet"></router-outlet>
+    </div>
+    <div class="col-md-2">
+      <router-outlet name="popup"></router-outlet>
+    </div>
+  </div>
 </div>
