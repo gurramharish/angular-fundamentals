@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../user/auth.guard';
+import { ProductEditGuard } from './guards/product-edit.guard';
 import { ProductDetailComponent } from './product-detail.component';
 import { ProductEditInfoComponent } from './product-edit/product-edit-info.component';
 import { ProductEditTagsComponent } from './product-edit/product-edit-tags.component';
@@ -26,6 +27,7 @@ const routes: Routes = [
         path: ':id/edit',
         component: ProductEditComponent,
         resolve: { resolvedData: ProductResolver },
+        canDeactivate: [ProductEditGuard],
         children: [
           {
             path: '',

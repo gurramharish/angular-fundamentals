@@ -860,6 +860,8 @@ passenge.children?.length || 0
     * canLoad - Prevent asynchronous routing
     * resolve - Prefetch data before activating a route
 
+### canActivate
+
 1. To protect route from unauthorize access we can implement `CanActivate` interface and create auth guard service.
 
   ```typescript
@@ -869,7 +871,7 @@ passenge.children?.length || 0
   export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.checkLoggedIn();
+      return this.checkLoggedIn(state.url);
     }
   }
   ```
@@ -896,6 +898,10 @@ passenge.children?.length || 0
     }
   ];
   ```
+
+## Asynchronous Routing or Lazy Loading
+
+1. 
 
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
