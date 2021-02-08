@@ -7,7 +7,7 @@ import { Product } from '../product';
   templateUrl: './product-edit-tags.component.html'
 })
 export class ProductEditTagsComponent implements OnInit {
-  errorMessage: string;
+  errorMessage = '';
   newTags = '';
   product: Product;
 
@@ -35,6 +35,6 @@ export class ProductEditTagsComponent implements OnInit {
 
   // Remove the tag from the array of tags.
   removeTag(idx: number): void {
-    this.product.tags.splice(idx, 1);
+    this.product.tags?.splice(idx, 1);
   }
 }

@@ -15,16 +15,16 @@ export class ProductEditComponent implements OnInit {
   pageTitle = 'Product Edit';
   errorMessage = '';
   dataIsValid: {[key: string]: boolean} = {};
-  private currentProduct: Product;
-  private originalProduct: Product;
+  private currentProduct: Product | null = null;
+  private originalProduct: Product | null = null;
 
-  get product(): Product {
+  get product(): Product | null {
     return this.currentProduct;
   }
 
-  set product(value: Product) {
+  set product(value: Product | null) {
     this.currentProduct = value;
-    this.originalProduct = { ...value };
+    this.originalProduct = value && { ...value };
   }
 
   get isDirty(): boolean {
@@ -59,13 +59,13 @@ export class ProductEditComponent implements OnInit {
   }
 
   deleteProduct(): void {
-    if (this.product.id === 0) {
+    if (this.product?.id === 0) {
       // Don't delete, it was never saved.
       this.onSaveComplete(`${this.product.productName} was deleted`);
     } else {
-      if (confirm(`Really delete the product: ${this.product.productName}?`)) {
+      if (confirm(`Really delete the product: ${this.product?.productName}?`) && this.product) {
         this.productService.deleteProduct(this.product.id).subscribe({
-          next: () => this.onSaveComplete(`${this.product.productName} was deleted`),
+          next: () => this.onSaveComplete(`${this.product?.productName} was deleted`),
           error: err => this.errorMessage = err
         });
       }
@@ -83,14 +83,14 @@ export class ProductEditComponent implements OnInit {
 
   saveProduct(): void {
     if (this.isValid()) {
-      if (this.product.id === 0) {
+      if (this.product?.id === 0) {
         this.productService.createProduct(this.product).subscribe({
-          next: () => this.onSaveComplete(`The new ${this.product.productName} was saved`),
+          next: () => this.onSaveComplete(`The new ${this.product?.productName} was saved`),
           error: err => this.errorMessage = err
         });
-      } else {
-        this.productService.updateProduct(this.product).subscribe({
-          next: () => this.onSaveComplete(`The updated ${this.product.productName} was saved`),
+      } else if(this.product) {
+         this.productService.updateProduct(this.product).subscribe({
+          next: () => this.onSaveComplete(`The updated ${this.product?.productName} was saved`),
           error: err => this.errorMessage = err
         });
       }
@@ -100,7 +100,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   reset(): void {
-    this.dataIsValid = null;
+    this.dataIsValid = {};
     this.currentProduct = null;
     this.originalProduct = null;
   }
@@ -117,7 +117,7 @@ export class ProductEditComponent implements OnInit {
     console.log('validation form -------');
     this.dataIsValid = {};
 
-    if (this.product.productName &&
+    if (this.product?.productName &&
       this.product.productName.length >= 3 &&
       this.product.productCode) {
       this.dataIsValid['info'] = true;
@@ -125,8 +125,8 @@ export class ProductEditComponent implements OnInit {
       this.dataIsValid['info'] = false;
     }
 
-    if (this.product.category &&
-      this.product.category.length >= 3) {
+    if (this.product?.category &&
+      this.product?.category.length >= 3) {
         this.dataIsValid['tags'] = true;
     } else {
       this.dataIsValid['tags'] = false;

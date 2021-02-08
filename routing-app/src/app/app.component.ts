@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { env } from 'process';
 import { slideInAnimation } from './app.animation';
 import { MessageService } from './messages/message.service';
 
