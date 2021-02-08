@@ -787,6 +787,24 @@ passenge.children?.length || 0
 
 1. We can subscribe to the router events and check the event to perform any opertaion. The best use case for using router events is for showing loader when navigate between routes.
 
+1. Subscirbe for the router events in app.components.ts for showing the loader, example bellow:
+
+  ```typescript
+  router.events.subscribe((event: Event) => {
+    this.checkRouterEvent(event);
+  });
+
+  checkRouterEvent(event: Event): void {
+    if (event instanceof NavigationStart) {
+      this.loading = true;
+    } else if (event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError) {
+        this.loading = false;
+    }
+  }
+  ```
+
 ## Secondary Routes
 
 1. Mutliple routes displayed at the same time, and at the same level of hirearchy are reffered to as peer, sibiling, auxiliary or secondary routes.
@@ -901,7 +919,114 @@ passenge.children?.length || 0
 
 ## Asynchronous Routing or Lazy Loading
 
-1. 
+1. Lazy loading will speed up initial start up time.
+
+1. Feture modules should not be imported in any another module, it will totally breaks the lazy/asynchronous loading.
+
+1. Lazy loading configuration in `app.routing.module.ts`
+
+    ```typescript
+    {
+      path: 'products',
+      canActivate: [AuthGuard],
+      loadChildren: () => import('./products/product.module').then(m => m.ProductModule)
+    }
+    ```
+
+1. In lazy loading we can use one more router guard `canLoad`.
+
+1. `canLoad` guard allows a module to load lazily only if the criteria matches, which enhances the security, where only the authorize users only can see the source code.
+
+1. Implement a guard using `CanLoad` interface and override the method `canLoad`, example bellow.
+
+  ```typescript
+  canLoad(route: Route): boolean {
+    return this.checkLoggedIn(route.path ? route.path : '');
+  }
+  ```
+
+1. And change your route config for lazy loaded module with `canLoad` guard, example bellow.
+
+  ```typescript
+  {
+    path: 'products',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./products/product.module').then(m => m.ProductModule)
+  },
+  ```
+
+### Preloading (Eager Lazy Loading)
+
+1. There is a minor drawback with lazy loading, when a lazy loaded module loads for the first time, based on the user internet speed it may take time to load the module, which may cause incovince for the user experience. So we can preload the feature modules asynchronousuly using `preloadingStrategy`.
+
+1. Preloading (Eager Lazy Loading) should be implemented considering the most used modules after the initial loading.
+
+1. Angular router provide 3 preloading strategies:
+
+    * No preloading
+    * Preload all
+    * Custom
+
+1. No preloading the default startegy.
+
+1. We can preload all the lazy modules using bellow router config.
+
+  ```typescript
+  import { RouterModule, PreloadAllModules } from '@angular/router';
+
+  RouterModule.forRoot([
+    { path: 'welcome', component: WelcomeComponent },
+    {path: 'products', loadChildren: () => import('./products/product.module').then(m => m.ProductModule)},
+    { path: '', redirectTo: 'welcome', pathMatch: 'full'},
+    { path: '**', component: PageNotFoundComponent }
+  ], { preloadingStrategy: PreloadAllModules})
+  ```
+  
+1. `canLoad` guard blocks preloading.
+
+1. Custom preloading strategy service can be implemented using `PreloadingStrategy` interface.
+
+  ```typescript
+  import { Injectable } from '@angular/core';
+  import { PreloadingStrategy, Route } from '@angular/router';
+  import { Observable, of } from 'rxjs';
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SelectivePreloadingStrategy implements PreloadingStrategy {
+
+
+    preload(route: Route, load: () => Observable<any>): Observable<any> {
+      if ( route.data && route.data['preload'] ) {
+        return load();
+      }
+      return of(null);
+    }
+  }
+  ```
+
+  ```typescript app.routing.module.ts
+  const routes: Routes = [
+    { path: 'welcome', component: WelcomeComponent },
+    {
+      path: 'products',
+      canActivate: [AuthGuard],
+      loadChildren: () => import('./products/product.module').then(m => m.ProductModule),
+      data: { preload: true }
+    },
+    { path: '', redirectTo: 'welcome', pathMatch: 'full'},
+    { path: '**', component: PageNotFoundComponent }
+  ];
+
+  @NgModule({
+    imports: [
+      RouterModule.forRoot(routes, {preloadingStrategy: SelectivePreloadingStrategy})
+    ],
+    exports: [RouterModule]
+  })
+  export class AppRoutingModule { }
+  ```
 
 ## Content Projection using ng-template, ng-content, ng-container and *ngTemplateOutlet
 
@@ -920,6 +1045,7 @@ passenge.children?.length || 0
 1. A class with @NgModule decorator.
 
 1. Its purpose:
+  
     - Organize the pieces of our applicaiton
     - Arrange them into blocks
     - Extend our application with capabilites from external libraries
