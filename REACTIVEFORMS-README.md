@@ -285,4 +285,91 @@ more complex scenarios, Immutable data model, Easier to perform an action on a v
 
 ### Cross-field Validation: Nested FormGroup
 
-1. 
+Example:
+
+```typescript
+ emailGroup: this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        confirmEmail: ['', Validators.required]
+    }, {validators: emailMatcher})
+```
+
+## Reacting to Changes
+
+1. The cool thing about reactive forms is we can watch for the changes happening to a FormControl or a FormGroup and react to those changes in real time.
+
+1. Both FormControl and FormGroup has `valueChanges` property which emits a event every time the value of the control changes, either in the user intreface or programatically.
+
+1. Watching and reacting FormControl and FormGroup value changes syntax:
+
+```typescript
+// Watching FormContorl
+const phoneControl = this.customerForm.get('phone');
+phoneControl.valueChanges.subscribe(value => console.log(value)); // We can call other functions in subscirbe
+
+// Watching FormGroup
+this.customerForm.valueChanges.subscritbe(value => console.log(JSON.stringify(value)));
+```
+
+### Dispalying validation messages using valueChanges
+
+1. Instead of having big validation checks in html like bellow example, we can watch for valueChanges and display validation messages in efficient way.
+
+```html
+<input  class="form-control"
+                    id="emailId"
+                    type="email"
+                    placeholder="Email (required)"
+                    formControlName="email"
+                    [ngClass]="{'is-invalid': customerForm.get('emailGroup').errors ||
+                                              ((customerForm.get('emailGroup.email').touched
+                                              || customerForm.get('emailGroup.email').dirty)
+                                              && !customerForm.get('emailGroup.email').valid) }" />
+```
+
+1. Will change the above code using bellow steps.
+
+    * Create a errorMessage variable for the FormControl
+    * Get the error messages as a JSON object from backend or some constants.
+    * Write a common method take the FormControl as input and check for touched, dirty and set the errorMessage dynamically.
+
+    Example:
+
+    ```typescript
+
+    emailErrorMessage: string
+    private validationMessages = {
+        required: "Please enter your email address.",
+        email: "Please enter a valid email address."
+    }
+
+    const emailControl = this.customerForm.get('email');
+    emailControl.valueChanges.subscribe(value => this.setMessage(emailControl));
+
+    setMessage(c: AbstractControl): void {
+        this.emailErrorMessage = '';
+        if((c.touched || c.dirty) && c.errors) {
+            this.emailErrorMessage = Object.keys(c.errors).map(
+                key => this.validationMessages[key].join(' ');
+            )
+        }
+    }
+    ```
+
+1. But there is drawback with valueChanges will not work on focus and focus out, so we wont see any errors messages if the FormControl is touched and focused out.
+
+### Reactive Transformations using RxJs operators
+
+1. Validation messages are displayed immediately after user starts typing, we can use `debounceTime` operator to ignore the events until a specific time has passed without another event.
+
+1. debounceTime(1000) waits for 1000 milliseconds of no events before emitting another event.
+
+1. `throttleTime` emits a value, then ignores subsequent values for a specific amount of time.
+
+1. `distinctUntilChanged` suppress duplicate consecutive items for(Ctrl and Shift keys changed).
+
+    ```typesciprt
+    emailControl.valueChanges.pipe(
+        debounceTiime(1000)
+    ).subscribe(value => this.setEmailErroMessage(emailControl));
+    ```

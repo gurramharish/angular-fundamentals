@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 import { Customer } from '../customer';
 
 function emailMatcher(c: AbstractControl): { [key: string]: boolean } | null {
   const email = c.get('email');
   const confirmationEmail = c.get('confirmEmail');
-  if ( email.pristine || confirmationEmail.pristine || ( email.value === confirmationEmail.value ) ) {
+  if (email.pristine || confirmationEmail.pristine || (email.value === confirmationEmail.value)) {
     return null;
   }
-  return { match: true};
+  return { match: true };
 }
 
 function ratingRange(min: number, max: number): ValidatorFn {
@@ -30,6 +31,12 @@ function ratingRange(min: number, max: number): ValidatorFn {
 export class CustomerReactiveComponent implements OnInit {
   customerForm: FormGroup;
   customer = new Customer();
+  emailValidationMessage: string;
+
+  private validationMessages = {
+    required: 'Please enter your email address.',
+    email: 'Please enter a valid email address.'
+  };
 
   constructor(private fb: FormBuilder) { }
 
@@ -50,12 +57,29 @@ export class CustomerReactiveComponent implements OnInit {
       emailGroup: this.fb.group({
         email: ['', [Validators.required, Validators.email]],
         confirmEmail: ['', Validators.required]
-      }, {validators: emailMatcher}),
+      }, { validators: emailMatcher }),
       phone: '',
       notification: 'email',
       rating: ['', ratingRange(1, 5)],
       sendCatalog: { value: true, disabled: true }
     });
+
+    // Watching for FormControl and FormGroup changes using valueChanges
+    this.customerForm.get('notification').valueChanges.subscribe(value => this.setNotification(value));
+    // this.customerForm.valueChanges.subscribe(value => console.log('CustomerForm value changed ::: ', JSON.stringify(value)));
+
+    // Displaying error messages using valueChanges
+    const emailControl = this.customerForm.get('emailGroup.email');
+    emailControl.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe(value => this.setEmailErroMessage(emailControl));
+  }
+
+  setEmailErroMessage(c: AbstractControl): void {
+    this.emailValidationMessage = '';
+    if ((c.touched || c.dirty) && c.errors) {
+      this.emailValidationMessage = Object.keys(c.errors).map(key => this.validationMessages[key]).join(' ');
+    }
   }
 
   setNotification(notifyVia: string): void {
