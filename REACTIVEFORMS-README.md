@@ -373,3 +373,27 @@ this.customerForm.valueChanges.subscritbe(value => console.log(JSON.stringify(va
         debounceTiime(1000)
     ).subscribe(value => this.setEmailErroMessage(emailControl));
     ```
+
+### Dynamically Duplicate Input Elements
+
+1. If we need to duplicate single form field we can duplicate the form control.
+
+1. If we have set have fields to duplicate dynamically we need to group those fields under a single form group.
+
+1. Benifits of FormGroup:
+
+    * Match the value of the form model to data model.
+    * Check touched, dirty and valid state easily.
+    * Watch for changes and react.
+    * Perform cross field validation.
+    * Dynamically duplicate the group.
+
+1. We need FormArray to store the dynamic form groups. There are 2 basic ways to create a FormArray.
+
+    ```typescript
+    this.myArray = new FormArray([...]);
+
+    or
+
+    this.myArray = this.fb.array([...]);
+    ```

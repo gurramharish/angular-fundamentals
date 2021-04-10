@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { Customer } from '../customer';
@@ -61,9 +61,9 @@ export class CustomerReactiveComponent implements OnInit {
       phone: '',
       notification: 'email',
       rating: ['', ratingRange(1, 5)],
-      sendCatalog: { value: true, disabled: true }
+      sendCatalog: true,
+      addresses: this.fb.array([this.buildAddress()])
     });
-
     // Watching for FormControl and FormGroup changes using valueChanges
     this.customerForm.get('notification').valueChanges.subscribe(value => this.setNotification(value));
     // this.customerForm.valueChanges.subscribe(value => console.log('CustomerForm value changed ::: ', JSON.stringify(value)));
@@ -72,7 +72,32 @@ export class CustomerReactiveComponent implements OnInit {
     const emailControl = this.customerForm.get('emailGroup.email');
     emailControl.valueChanges.pipe(
       debounceTime(1000)
-    ).subscribe(value => this.setEmailErroMessage(emailControl));
+    ).subscribe({
+      next: (value: string) => {
+        this.setEmailErroMessage(emailControl);
+       },
+      error: (err: any) => console.log('Error : ', err),
+      complete: () => console.log('Completed!!')
+    });
+  }
+
+  get addresses(): FormArray {
+    return this.customerForm.get('addresses') as FormArray;
+  }
+
+  buildAddress(): FormGroup {
+    return this.fb.group({
+      addressType: 'home',
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zip: ''
+    });
+  }
+
+  addAddress(): void {
+    this.addresses.push(this.buildAddress());
   }
 
   setEmailErroMessage(c: AbstractControl): void {
