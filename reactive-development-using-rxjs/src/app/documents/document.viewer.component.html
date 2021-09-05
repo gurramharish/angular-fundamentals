@@ -1,0 +1,3 @@
+<app-lib-dvc [documentId]="documentId" [showAppError]="showMyError" (errorOccurred)="showMyErrorPage($event)" ></app-lib-dvc>
+<p *ngIf="errorOccurred && showMyError">Error from my Application!!!</p>
+

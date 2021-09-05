@@ -20,6 +20,7 @@ export class ProductListComponent implements OnInit {
     return this._listFilter;
   }
   set listFilter(value: string) {
+    console.log('Invoked for value change :: ', value);
     this._listFilter = value;
     this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
   }

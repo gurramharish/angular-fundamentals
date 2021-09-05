@@ -10,9 +10,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './page-not-found.component';
+import { LibDocumentViewerComponent } from './documents/lib-document/lib.document.viewer.component.component';
+import { DocumentViewerComponent } from './documents/document.viewer.component';
+import { FormsModule } from '@angular/forms';
+import { DocumentFormComponent } from './documents/document-form/document-form.component';
 
 @NgModule({
   imports: [
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
@@ -21,7 +26,10 @@ import { PageNotFoundComponent } from './page-not-found.component';
   declarations: [
     AppComponent,
     WelcomeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    DocumentViewerComponent,
+    LibDocumentViewerComponent,
+    DocumentFormComponent
   ],
   bootstrap: [AppComponent]
 })
